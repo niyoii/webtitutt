@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Surprise For You 💙</title>
+    <style>
+        /* --- RESET STYLE BROWSER --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body, html {
+            min-height: 100vh;
+            width: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0b132b; /* Warna Latar Belakang Navy Blue */
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* --- HALAMAN AWAL: VINYL RECORD DI TENGAH --- */
+        .vinyl-container {
+            position: relative;
+            z-index: 999;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .vinyl-record {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            /* Animasi Muter-Muter Terus */
+            animation: spin 6s linear infinite; 
+            border: 4px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .click-hint {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #e0f2fe;
+            font-weight: 500;
+            letter-spacing: 1px;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* --- HALAMAN KEDUA: KONTEN UTAMA (TERSEMBUNYI DIAWAL) --- */
+        .main-gift-wrapper {
+            width: 100%;
+            max-width: 1100px; /* Ukuran lebar maksimal untuk menampung kiri-tengah-kanan di laptop */
+            display: none; 
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Kelas pemicu saat vinyl berhasil diklik */
+        .main-gift-wrapper.show {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* 1. SISI TENGAH: Bingkai Polaroid Warna Soft Blue */
+        .polaroid-frame {
+            background: #f0f9ff; /* Warna Soft Blue Dasar Polaroid */
+            padding: 16px 16px 45px 16px;
+            border-radius: 4px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
+            flex: 0 0 320px; 
+            width: 320px;
+            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .polaroid-frame:hover {
+            transform: rotate(-2deg) scale(1.02);
+        }
+
+        .polaroid-photo {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 2px;
+            border: 1px solid rgba(0,0,0,0.05);
+            background-color: #dbeafe;
+        }
+
+        /* 2. SISI KIRI DAN KANAN: Kotak Surat Ucapan Estetik */
+        .letter-box {
+            background: rgba(255, 255, 255, 0.08); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            color: #f0f9ff; /* Teks berwarna cerah soft blue agar kontras */
+            font-size: 1.05rem;
+            line-height: 1.6;
+            text-align: justify;
+            flex: 1; 
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .letter-box h2 {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.35rem;
+            color: #38bdf8; /* Soft blue terang untuk judul */
+            margin-bottom: 15px;
+        }
+
+        /* Hiasan Bar Gulir (Scrollbar) Box Ucapan */
+        .letter-box::-webkit-scrollbar {
+            width: 4px;
+        }
+        .letter-box::-webkit-scrollbar-thumb {
+            background-color: rgba(56, 189, 248, 0.3);
+            border-radius: 10px;
+        }
+
+        /* --- RESPONSIVE LAYOUT (MEDIA QUERIES) --- */
+        /* Mengubah susunan baris (Laptop) menjadi kolom bertumpuk (HP) otomatis */
+        @media (max-width: 900px) {
+            body {
+                overflow-y: auto; 
+            }
+            .main-gift-wrapper.show {
+                flex-direction: column; /* Foto di atas, ucapan di bawahnya */
+                gap: 20px;
+            }
+            .polaroid-frame {
+                order: 1; /* Memaksa polaroid berada paling atas di HP */
+                flex: none;
+                width: 100%;
+                max-width: 320px;
+            }
+            .letter-box {
+                order: 2; 
+                width: 100%;
+                max-width: 400px;
+                max-height: none; 
+                overflow-y: visible;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- File Musik Pengiring -->
+    <audio id="bgMusic" src="Alex Crichton - Merry Christmas, i miss you (Lyrics).mp3" loop></audio>
+
+    <!-- HALAMAN AWAL: VINYL RECORD YANG BISA BERPUTAR & DIKLIK -->
+    <div class="vinyl-container" id="triggerZone" onclick="startSurprise()">
+        <img src="vinyl_record.jpg" alt="Play Vinyl Record" class="vinyl-record">
+        <div class="click-hint">Click to play ✨</div>
+    </div>
+
+    <!-- HALAMAN KEDUA: STRUKTUR STRIP (KIRI - TENGAH - KANAN) -->
+    <div class="main-gift-wrapper" id="giftWrapper">
+        
+        <!-- SISI KIRI: Kotak Ucapan Bagian 1 -->
+        <div class="letter-box">
+            <h2>For You, My Special One</h2>
+            Halo! Happy Birthday All maaf ia kasih ini telat semoga al panjang umur sehat selaluu yaa semoga rezekinya lancar terus semoga selalu di kelilingi orang' baik yaa. I hope that on ur Birthday you can become a responsible person and someone who can be trusted. Aamiin.
+        </div>
+
+        <!-- SISI TENGAH: Bingkai Polaroid Soft Blue -->
+        <div class="polaroid-frame">
+            <img src="photo_1.jpeg" alt="Our Special Memories" class="polaroid-photo">
+        </div>
+
+        <!-- SISI KANAN: Kotak Ucapan Bagian 2 -->
+        <div class="letter-box">
+            <h2>A Little Message From Me</h2>
+            I’m so, so sorry for what I did to you before, okay?. i know its my fault but i hope u can forgive me 💗, and i hope you’ll find a better partner than before and don't  hurt her feelings, Treat him as well as you can yaAa?. See u bb💗.
+        </div>
+
+    </div>
+
+    <script>
+        function startSurprise() {
+            // 1. Putar lagu mp3 secara instan
+            const music = document.getElementById("bgMusic");
+            music.play().catch(err => console.log("Pemutaran lagu otomatis ditahan oleh sistem browser."));
+
+            // 2. Transisi menyembunyikan Vinyl Record (Mengecil dan Memudar halus)
+            const triggerZone = document.getElementById("triggerZone");
+            triggerZone.style.opacity = "0";
+            triggerZone.style.transform = "scale(0.4) rotate(180deg)";
+            
+            setTimeout(() => {
+                triggerZone.style.display = "none";
+                
+                // 3. Memunculkan susunan Polaroid & Dua Ucapan (Kiri-Kanan)
+                const giftWrapper = document.getElementById("giftWrapper");
+                giftWrapper.style.display = "flex";
+                
+                setTimeout(() => {
+                    giftWrapper.classList.add("show");
+                }, 50);
+            }, 600);
+
+            
+        }
+    </script>
+</body>
+</html>
